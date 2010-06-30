@@ -114,9 +114,8 @@ sub _dispatch {
     my $target = $self->_callbacks->{ $request->{method} };
 
     # must response if id is exists
-    if (my $id = $request->{id}) {
-        $indicator = "$indicator:$id";
-
+    if (1) {
+        my $id     = $request->{id}; 
         my $res_cb = sub {
             my $type   = shift;
             my $result = @_ > 1 ? \@_ : $_[0];
@@ -128,21 +127,19 @@ sub _dispatch {
             };
         };
 
-        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( packer_cb => $res_cb );
+        # Without id it is a notification and the result shouldn't be returned
+        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( 
+            defined $id ? (packer_cb => $res_cb) : ()
+        );
 
         $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
         $target->( $cv, @{ $request->{params} || [] } );
 
         push @results, $cv;
     }
-    else {
-        # without id parameter, this is notification.
-        # dispatch to method without cv object.
-        $target ||= sub { warn qq/No such method "$request->{method}" found/ };
-        $target->(undef, @{ $request->{params} || [] });
-    }
 
-    $handle->push_write( json => map { $_->recv } $results[0] );
+    @results = map { $_->recv } @results;
+    $handle->push_write( json => $results[0] ) if $results[0];
 }
 
 __PACKAGE__->meta->make_immutable;
