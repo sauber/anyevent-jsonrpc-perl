@@ -108,14 +108,14 @@ sub reg_cb {
 
 sub _dispatch {
     my ($self, $indicator, $handle, $request) = @_;
-    return unless $request and ref $request eq 'HASH';
+    return unless $request and ref $request;
 
+    my $batch = (ref $request eq "ARRAY");
     my @results;
-    my $target = $self->_callbacks->{ $request->{method} };
 
-    # must response if id is exists
-    if (1) {
-        my $id     = $request->{id}; 
+    for my $call ( ($batch ? @$request : $request) ) {
+        my $target = $self->_callbacks->{ $call->{method} };
+        my $id     = $call->{id}; 
         my $res_cb = sub {
             my $type   = shift;
             my $result = @_ > 1 ? \@_ : $_[0];
@@ -133,13 +133,14 @@ sub _dispatch {
         );
 
         $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
-        $target->( $cv, @{ $request->{params} || [] } );
+        $target->( $cv, @{ $call->{params} || [] } );
 
         push @results, $cv;
     }
 
     @results = map { $_->recv } @results;
-    $handle->push_write( json => $results[0] ) if $results[0];
+    my $result = $batch ? \@results : $results[0];
+    $handle->push_write( json => $result ) if $result;
 }
 
 __PACKAGE__->meta->make_immutable;
