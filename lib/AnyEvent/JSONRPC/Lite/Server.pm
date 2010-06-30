@@ -110,6 +110,7 @@ sub _dispatch {
     my ($self, $indicator, $handle, $request) = @_;
     return unless $request and ref $request eq 'HASH';
 
+    my @results;
     my $target = $self->_callbacks->{ $request->{method} };
 
     # must response if id is exists
@@ -120,19 +121,19 @@ sub _dispatch {
             my $type   = shift;
             my $result = @_ > 1 ? \@_ : $_[0];
 
-            $handle->push_write( json => {
+            return {
                 id     => $id,
                 result => $type eq 'result' ? $result : undef,
                 error  => $type eq 'error'  ? $result : undef,
-            }) if $handle;
+            };
         };
-        weaken $handle;
 
-        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new;
-        $cv->_cb(sub { $res_cb->( $_[0]->recv ) });
+        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( packer_cb => $res_cb );
 
         $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
         $target->( $cv, @{ $request->{params} || [] } );
+
+        push @results, $cv;
     }
     else {
         # without id parameter, this is notification.
@@ -140,6 +141,8 @@ sub _dispatch {
         $target ||= sub { warn qq/No such method "$request->{method}" found/ };
         $target->(undef, @{ $request->{params} || [] });
     }
+
+    $handle->push_write( json => map { $_->recv } $results[0] );
 }
 
 __PACKAGE__->meta->make_immutable;

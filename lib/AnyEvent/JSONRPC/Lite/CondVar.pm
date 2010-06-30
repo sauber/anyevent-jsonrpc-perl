@@ -11,6 +11,11 @@ has _cv => (
     },
 );
 
+has packer_cb => (
+    is      => 'rw',
+    default => sub { sub { } },
+);
+
 no Any::Moose;
 
 sub _cb {
@@ -26,6 +31,12 @@ sub result {
 sub error {
     my ($self, @error) = @_;
     $self->_cv->send( error => @error);
+}
+
+sub recv {
+    my ($self) = @_;
+
+    return $self->packer_cb->( $self->_cv->recv() );
 }
 
 __PACKAGE__->meta->make_immutable;
