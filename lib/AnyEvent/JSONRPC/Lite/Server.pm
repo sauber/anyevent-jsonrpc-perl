@@ -135,7 +135,11 @@ sub _dispatch {
         );
 
         $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
-        $target->( $cv, @{ $call->{params} || [] } );
+        $target->( 
+            $cv, 
+            ref $call->{params} eq "ARRAY" ? @{ $call->{params} } :
+            ref $call->{params} eq "HASH"  ? %{ $call->{params} } : ()
+        );
 
         push @results, $cv;
     }
