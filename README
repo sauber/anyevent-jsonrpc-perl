@@ -1,4 +1,14 @@
-This is Perl module AnyEvent::JSONRPC::Lite.
+This is a fork of Daisuke Murase's Perl module AnyEvent::JSONRPC::Lite.
+
+CHANGES
+
+The module is updated to support the format described by the JSONRPC version
+2.0 specification. The relevant differences between jsonrpc 1.0 and 2.0 is the
+support for batched method calls and named parameters by using a JSON Object
+as 'parameters'.
+
+Thinking about it batched operations might not be an optimization using TCP as
+transport protocol and the named parameters part is really easy worked around.
 
 INSTALLATION
 
