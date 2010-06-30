@@ -116,14 +116,16 @@ sub _dispatch {
     for my $call ( ($batch ? @$request : $request) ) {
         my $target = $self->_callbacks->{ $call->{method} };
         my $id     = $call->{id}; 
+
         my $res_cb = sub {
             my $type   = shift;
             my $result = @_ > 1 ? \@_ : $_[0];
 
             return {
                 id     => $id,
-                result => $type eq 'result' ? $result : undef,
-                error  => $type eq 'error'  ? $result : undef,
+                jsonrpc => "2.0",
+                ($type eq 'result' ? (result => $result) : ()),
+                ($type eq 'error'  ? (error  => $result) : ()),
             };
         };
 
