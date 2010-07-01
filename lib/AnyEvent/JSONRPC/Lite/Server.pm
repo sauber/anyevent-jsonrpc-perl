@@ -109,30 +109,19 @@ sub reg_cb {
 
 sub _dispatch {
     my ($self, $indicator, $handle, $request) = @_;
-    return unless $request and ref $request;
+    return unless $request and ref $request eq "HASH";
 
-    my $batch = (ref $request eq "ARRAY");
-    my @results;
-    my @notifications;
+    my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
+    my $target = $self->_callbacks->{ $call->method };
 
-    for my $json ( ($batch ? @$request : $request) ) {
-        my $call   = JSON::RPC::Common::Procedure::Call->inflate($json);
-        my $target = $self->_callbacks->{ $call->method };
+    # Without id it is a notification and the result shouldn't be returned
+    my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( call => $call );
 
-        # Without id it is a notification and the result shouldn't be returned
-        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( call => $call );
+    $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
+    $target->( $cv, $call->params_list );
 
-        $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
-        $target->( $cv, $call->params_list );
-
-        push @{ $call->is_notification ? \@notifications : \@results }, $cv;
-    }
-
-    @results = map { $_->recv->deflate } @results;
-    my $result = $batch ? \@results : $results[0];
-    $handle->push_write( json => $result ) if $result;
-
-    $_->recv for @notifications;
+    my $response = $cv->recv;
+    $handle->push_write( json => $response->deflate ) if not $call->is_notification;
 }
 
 __PACKAGE__->meta->make_immutable;
