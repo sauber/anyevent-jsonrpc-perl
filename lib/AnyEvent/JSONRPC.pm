@@ -64,12 +64,18 @@ This module provide TCP-based JSONRPC server/client implementation.
 L<AnyEvent::JSONRPC> provide you a couple of export functions that are shortcut of L<AnyEvent::JSONRPC::Client> and L<AnyEvent::JSONRPC::Server>.
 One is C<jsonrpc_client> for Client, another is C<jsonrpc_server> for Server.
 
-=head2 WHY I NAMED "Lite" TO THIS MODULE
+=head2 DIFFERENCES FROM THE "Lite" MODULE
 
-This module implement only JSONRPC 1.0's TCP part, not HTTP protocol, and not full of JSONRPC 2.0 spec.
-But I think this is enough as simple RPC client/server, so I don't want to implement 2.0 things at this point.
+This module is a fork of Daisuke Murase's L<AnyEvent::JSONRPC::Lite> updated
+to use Yuval Kogman's JSON::RPC::Common for handling the JSONRPC messages.
+This enables support for handling messages complying to all versions of the
+JSONRPC standard.
 
-That's why this module name is AnyEvent::JSONRPC, not AnyEvent::JSONRPC (this should be full-spec)
+The System Services/Service Description parts of version 1.1-wd and 1.1-alt is
+unimplemented and left to users to implement.
+
+As none of the specs really defines JSON-RPC over TCP I consider this module
+an otherwise full-spec implementation.
 
 =head1 FUNCTIONS
 
@@ -101,17 +107,17 @@ See L<AnyEvent::JSONRPC::Client> for more detail.
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Client>, L<AnyEvent::JSONRPC::Server>.
+L<AnyEvent>, L<AnyEvent::JSONRPC::Lite>, L<JSON::RPC::Common>.
 
 L<http://json-rpc.org/>
 
 =head1 AUTHOR
 
-Daisuke Murase <typester@cpan.org>
+Peter Makholm <peter@makholm.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2009 by KAYAC Inc.
+Copyright (c) 2010 by Peter Makholm.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
