@@ -9,7 +9,7 @@ has cv => (
     default => sub {
         AnyEvent->condvar;
     },
-    handles => [qw( send recv )],
+    handles => [qw( send recv cb )],
 );
 
 has call => (

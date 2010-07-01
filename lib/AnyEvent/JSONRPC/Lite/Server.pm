@@ -114,14 +114,15 @@ sub _dispatch {
     my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
     my $target = $self->_callbacks->{ $call->method };
 
-    # Without id it is a notification and the result shouldn't be returned
     my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( call => $call );
+    $cv->cb( sub {
+        my $response = $cv->recv;
+
+        $handle->push_write( json => $response->deflate ) if not $cv->is_notification;
+    });
 
     $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
     $target->( $cv, $call->params_list );
-
-    my $response = $cv->recv;
-    $handle->push_write( json => $response->deflate ) if not $call->is_notification;
 }
 
 __PACKAGE__->meta->make_immutable;
