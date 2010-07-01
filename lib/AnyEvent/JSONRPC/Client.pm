@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Lite::Client;
+package AnyEvent::JSONRPC::Client;
 use Any::Moose;
 
 use Carp;
@@ -179,13 +179,13 @@ blockingly condvar condvars coroutine unix
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Lite::Client - Simple TCP-based JSONRPC client
+AnyEvent::JSONRPC::Client - Simple TCP-based JSONRPC client
 
 =head1 SYNOPSIS
 
-    use AnyEvent::JSONRPC::Lite::Client;
+    use AnyEvent::JSONRPC::Client;
     
-    my $client = AnyEvent::JSONRPC::Lite::Client->new(
+    my $client = AnyEvent::JSONRPC::Client->new(
         host => '127.0.0.1',
         port => 4423,
     );
@@ -200,7 +200,7 @@ AnyEvent::JSONRPC::Lite::Client - Simple TCP-based JSONRPC client
 
 =head1 DESCRIPTION
 
-This module is client part of L<AnyEvent::JSONRPC::Lite>.
+This module is client part of L<AnyEvent::JSONRPC>.
 
 =head2 AnyEvent condvars
 
@@ -244,7 +244,7 @@ use of condvars.
 
 Create new client object and return it.
 
-    my $client = AnyEvent::JSONRPC::Lite::Client->new(
+    my $client = AnyEvent::JSONRPC::Client->new(
         host => '127.0.0.1',
         port => 4423,
         %options,

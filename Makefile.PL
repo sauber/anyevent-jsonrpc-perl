@@ -1,6 +1,6 @@
 use inc::Module::Install;
-name 'AnyEvent-JSONRPC-Lite';
-all_from 'lib/AnyEvent/JSONRPC/Lite.pm';
+name 'AnyEvent-JSONRPC';
+all_from 'lib/AnyEvent/JSONRPC.pm';
 
 requires 'Any::Moose';
 requires 'AnyEvent' => '5.12';

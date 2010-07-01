@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Lite::InternalHandle;
+package AnyEvent::JSONRPC::InternalHandle;
 use Any::Moose;
 
 use AnyEvent;
@@ -28,11 +28,11 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Lite::InternalHandle - Handle object used internally in AnyEvent::JSONRPC::Lite::Server
+AnyEvent::JSONRPC::InternalHandle - Handle object used internally in AnyEvent::JSONRPC::Server
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Lite::Server>.
+L<AnyEvent::JSONRPC::Server>.
 
 =head1 AUTHOR
 

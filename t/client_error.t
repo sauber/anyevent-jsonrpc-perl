@@ -5,7 +5,7 @@ plan tests => 2;
 
 my $port = empty_port;
 
-use AnyEvent::JSONRPC::Lite;
+use AnyEvent::JSONRPC;
 
 my $server = jsonrpc_server undef, $port;
 $server->reg_cb( error => sub {

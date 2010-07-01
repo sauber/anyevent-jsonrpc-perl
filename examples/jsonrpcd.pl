@@ -6,7 +6,7 @@ use warnings;
 use Getopt::Long;
 
 use AnyEvent;
-use AnyEvent::JSONRPC::Lite;
+use AnyEvent::JSONRPC;
 
 my ($host, $port) = qw(127.0.0.1 4423);
 GetOptions(

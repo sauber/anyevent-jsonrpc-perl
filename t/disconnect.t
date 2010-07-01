@@ -5,7 +5,7 @@ plan tests => 3;
 use Test::TCP;
 
 use AnyEvent::Socket;
-use AnyEvent::JSONRPC::Lite;
+use AnyEvent::JSONRPC;
 
 my $port = empty_port;
 

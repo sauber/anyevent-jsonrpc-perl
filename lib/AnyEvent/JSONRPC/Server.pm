@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Lite::Server;
+package AnyEvent::JSONRPC::Server;
 use Any::Moose;
 
 use Carp;
@@ -7,8 +7,8 @@ use Scalar::Util 'weaken';
 use AnyEvent::Handle;
 use AnyEvent::Socket;
 
-use AnyEvent::JSONRPC::Lite::InternalHandle;
-use AnyEvent::JSONRPC::Lite::CondVar;
+use AnyEvent::JSONRPC::InternalHandle;
+use AnyEvent::JSONRPC::CondVar;
 use JSON::RPC::Common::Procedure::Call;
 
 has address => (
@@ -117,7 +117,7 @@ sub _dispatch {
     my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
     my $target = $self->_callbacks->{ $call->method };
 
-    my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( call => $call );
+    my $cv = AnyEvent::JSONRPC::CondVar->new( call => $call );
     $cv->cb( sub {
         my $response = $cv->recv;
 
@@ -133,7 +133,7 @@ sub _batch {
 
     my @response;
     for my $request (@request) {
-        my $internal = AnyEvent::JSONRPC::Lite::InternalHandle->new;
+        my $internal = AnyEvent::JSONRPC::InternalHandle->new;
 
         $self->_dispatch(undef, $internal, $request);
 
@@ -151,13 +151,13 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Lite::Server - Simple TCP-based JSONRPC server
+AnyEvent::JSONRPC::Server - Simple TCP-based JSONRPC server
 
 =head1 SYNOPSIS
 
-    use AnyEvent::JSONRPC::Lite::Server;
+    use AnyEvent::JSONRPC::Server;
     
-    my $server = AnyEvent::JSONRPC::Lite::Server->new( port => 4423 );
+    my $server = AnyEvent::JSONRPC::Server->new( port => 4423 );
     $server->reg_cb(
         echo => sub {
             my ($res_cv, @params) = @_;
@@ -171,7 +171,7 @@ AnyEvent::JSONRPC::Lite::Server - Simple TCP-based JSONRPC server
 
 =head1 DESCRIPTION
 
-This module is server part of L<AnyEvent::JSONRPC::Lite>.
+This module is server part of L<AnyEvent::JSONRPC>.
 
 =head1 METHOD
 
@@ -179,7 +179,7 @@ This module is server part of L<AnyEvent::JSONRPC::Lite>.
 
 Create server object, start listening socket, and return object.
 
-    my $server = AnyEvent::JSONRPC::Lite::Server->new(
+    my $server = AnyEvent::JSONRPC::Server->new(
         port => 4423,
     );
 
@@ -233,10 +233,10 @@ JSONRPC callback arguments consists of C<$result_cv>, and request C<@params>.
 
     my ($result_cv, @params) = @_;
 
-C<$result_cv> is L<AnyEvent::JSONRPC::Lite::CondVar> object.
+C<$result_cv> is L<AnyEvent::JSONRPC::CondVar> object.
 Callback must be call C<< $result_cv->result >> to return result or C<< $result_cv->error >> to return error.
 
-If C<$result_cv> is not defined, it is notify request, so you don't have to return response. See L<AnyEvent::JSONRPC::Lite::Client> notify method.
+If C<$result_cv> is not defined, it is notify request, so you don't have to return response. See L<AnyEvent::JSONRPC::Client> notify method.
 
 C<@params> is same as request parameter.
 

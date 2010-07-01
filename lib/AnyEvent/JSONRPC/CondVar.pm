@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Lite::CondVar;
+package AnyEvent::JSONRPC::CondVar;
 use Any::Moose;
 
 use AnyEvent;
@@ -39,11 +39,11 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Lite::CondVar - Condvar object used in AnyEvent::JSONRPC::Lite::Server
+AnyEvent::JSONRPC::CondVar - Condvar object used in AnyEvent::JSONRPC::Server
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Lite::Server>.
+L<AnyEvent::JSONRPC::Server>.
 
 =head1 METHOD
 

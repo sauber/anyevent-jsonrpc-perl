@@ -3,7 +3,7 @@ use Test::TCP;
 
 plan tests => 2;
 
-use AnyEvent::JSONRPC::Lite;
+use AnyEvent::JSONRPC;
 
 my $port = empty_port;
 
@@ -20,7 +20,7 @@ my $cv = AnyEvent->condvar;
 my $client;
 {
     my $closed;
-    $client = AnyEvent::JSONRPC::Lite::Client->new(
+    $client = AnyEvent::JSONRPC::Client->new(
         host => '127.0.0.1',
         port => $port,
         handler_options => {

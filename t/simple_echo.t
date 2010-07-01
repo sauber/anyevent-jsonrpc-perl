@@ -3,13 +3,13 @@ use Test::Base;
 plan tests => 3;
 
 use Test::TCP;
-use AnyEvent::JSONRPC::Lite::Client;
-use AnyEvent::JSONRPC::Lite::Server;
+use AnyEvent::JSONRPC::Client;
+use AnyEvent::JSONRPC::Server;
 
 my $port = empty_port;
 
 ## server
-my $server = AnyEvent::JSONRPC::Lite::Server->new( port => $port );
+my $server = AnyEvent::JSONRPC::Server->new( port => $port );
 $server->reg_cb(
     echo => sub {
         my ($result_cv, @params) = @_;
@@ -20,7 +20,7 @@ $server->reg_cb(
 );
 
 # client;
-my $client = AnyEvent::JSONRPC::Lite::Client->new(
+my $client = AnyEvent::JSONRPC::Client->new(
     host => '127.0.0.1',
     port => $port,
 );

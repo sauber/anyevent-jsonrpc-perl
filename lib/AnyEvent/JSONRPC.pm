@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Lite;
+package AnyEvent::JSONRPC;
 use strict;
 use warnings;
 use base 'Exporter';
@@ -7,13 +7,13 @@ our $VERSION = '0.12';
 
 our @EXPORT = qw/jsonrpc_client jsonrpc_server/;
 
-use AnyEvent::JSONRPC::Lite::Client;
-use AnyEvent::JSONRPC::Lite::Server;
+use AnyEvent::JSONRPC::Client;
+use AnyEvent::JSONRPC::Server;
 
 sub jsonrpc_client($$) {
     my ($host, $port) = @_;
 
-    AnyEvent::JSONRPC::Lite::Client->new(
+    AnyEvent::JSONRPC::Client->new(
         host => $host,
         port => $port,
     );
@@ -22,7 +22,7 @@ sub jsonrpc_client($$) {
 sub jsonrpc_server($$) {
     my ($address, $port) = @_;
 
-    AnyEvent::JSONRPC::Lite::Server->new(
+    AnyEvent::JSONRPC::Server->new(
         address => $address,
         port    => $port,
     );
@@ -38,11 +38,11 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Lite - Simple TCP-based JSONRPC client/server
+AnyEvent::JSONRPC - Simple TCP-based JSONRPC client/server
 
 =head1 SYNOPSIS
 
-    use AnyEvent::JSONRPC::Lite;
+    use AnyEvent::JSONRPC;
     
     my $server = jsonrpc_server '127.0.0.1', '4423';
     $server->reg_cb(
@@ -61,7 +61,7 @@ AnyEvent::JSONRPC::Lite - Simple TCP-based JSONRPC client/server
 
 This module provide TCP-based JSONRPC server/client implementation.
 
-L<AnyEvent::JSONRPC::Lite> provide you a couple of export functions that are shortcut of L<AnyEvent::JSONRPC::Lite::Client> and L<AnyEvent::JSONRPC::Lite::Server>.
+L<AnyEvent::JSONRPC> provide you a couple of export functions that are shortcut of L<AnyEvent::JSONRPC::Client> and L<AnyEvent::JSONRPC::Server>.
 One is C<jsonrpc_client> for Client, another is C<jsonrpc_server> for Server.
 
 =head2 WHY I NAMED "Lite" TO THIS MODULE
@@ -69,39 +69,39 @@ One is C<jsonrpc_client> for Client, another is C<jsonrpc_server> for Server.
 This module implement only JSONRPC 1.0's TCP part, not HTTP protocol, and not full of JSONRPC 2.0 spec.
 But I think this is enough as simple RPC client/server, so I don't want to implement 2.0 things at this point.
 
-That's why this module name is AnyEvent::JSONRPC::Lite, not AnyEvent::JSONRPC (this should be full-spec)
+That's why this module name is AnyEvent::JSONRPC, not AnyEvent::JSONRPC (this should be full-spec)
 
 =head1 FUNCTIONS
 
 =head2 jsonrpc_server $address, $port;
 
-Create L<AnyEvent::JSONRPC::Lite::Server> object and return it.
+Create L<AnyEvent::JSONRPC::Server> object and return it.
 
 This is equivalent to:
 
-    AnyEvent::JSONRPC::Lite::Server->new(
+    AnyEvent::JSONRPC::Server->new(
         address => $address,
         port    => $port,
     );
 
-See L<AnyEvent::JSONRPC::Lite::Server> for more detail.
+See L<AnyEvent::JSONRPC::Server> for more detail.
 
 =head2 jsonrpc_client $hostname, $port
 
-Create L<AnyEvent::JSONRPC::Lite::Client> object and return it.
+Create L<AnyEvent::JSONRPC::Client> object and return it.
 
 This is equivalent to:
 
-    AnyEvent::JSONRPC::Lite::Client->new(
+    AnyEvent::JSONRPC::Client->new(
         host => $hostname,
         port => $port,
     );
 
-See L<AnyEvent::JSONRPC::Lite::Client> for more detail.
+See L<AnyEvent::JSONRPC::Client> for more detail.
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Lite::Client>, L<AnyEvent::JSONRPC::Lite::Server>.
+L<AnyEvent::JSONRPC::Client>, L<AnyEvent::JSONRPC::Server>.
 
 L<http://json-rpc.org/>
 
