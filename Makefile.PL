@@ -4,6 +4,7 @@ all_from 'lib/AnyEvent/JSONRPC.pm';
 
 requires 'Any::Moose';
 requires 'AnyEvent' => '5.12';
+requires 'JSON::RPC::Common';
 requires 'JSON';
 recommends 'JSON::XS';
 
