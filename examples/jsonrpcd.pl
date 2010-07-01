@@ -35,6 +35,7 @@ $server->reg_cb(
 
         $cb->error( message => $message );
     },
+
 );
 
 AnyEvent->condvar->recv();

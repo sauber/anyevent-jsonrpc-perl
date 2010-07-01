@@ -2,7 +2,7 @@ use inc::Module::Install;
 name 'AnyEvent-JSONRPC';
 all_from 'lib/AnyEvent/JSONRPC.pm';
 
-requires 'Any::Moose';
+requires 'Moose';
 requires 'AnyEvent' => '5.12';
 requires 'JSON::RPC::Common';
 requires 'JSON';

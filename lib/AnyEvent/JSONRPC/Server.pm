@@ -1,5 +1,5 @@
 package AnyEvent::JSONRPC::Server;
-use Any::Moose;
+use Moose;
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -56,14 +56,18 @@ has _handlers => (
     default => sub { [] },
 );
 
-has _callbacks => (
-    is      => 'ro',
-    isa     => 'HashRef',
+has methods => (
+    isa     => 'HashRef[CodeRef]',
     lazy    => 1,
+    traits  => ['Hash'],
+    handles => {
+        reg_cb => 'set',
+        method => 'get',
+    },
     default => sub { {} },
 );
 
-no Any::Moose;
+no Moose;
 
 sub BUILD {
     my $self = shift;
@@ -100,14 +104,6 @@ sub BUILD {
     $self;
 }
 
-sub reg_cb {
-    my ($self, %callbacks) = @_;
-
-    while (my ($method, $callback) = each %callbacks) {
-        $self->_callbacks->{ $method } = $callback;
-    }
-}
-
 sub _dispatch {
     my ($self, $indicator, $handle, $request) = @_;
 
@@ -115,7 +111,7 @@ sub _dispatch {
     return unless $request and ref $request eq "HASH";
 
     my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
-    my $target = $self->_callbacks->{ $call->method };
+    my $target = $self->method( $call->method );
 
     my $cv = AnyEvent::JSONRPC::CondVar->new( call => $call );
     $cv->cb( sub {
