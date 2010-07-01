@@ -7,6 +7,7 @@ use Scalar::Util 'weaken';
 use AnyEvent::Handle;
 use AnyEvent::Socket;
 
+use AnyEvent::JSONRPC::Lite::InternalHandle;
 use AnyEvent::JSONRPC::Lite::CondVar;
 use JSON::RPC::Common::Procedure::Call;
 
@@ -109,6 +110,8 @@ sub reg_cb {
 
 sub _dispatch {
     my ($self, $indicator, $handle, $request) = @_;
+
+    return $self->_batch($handle, @$request) if ref $request eq "ARRAY";
     return unless $request and ref $request eq "HASH";
 
     my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
@@ -123,6 +126,21 @@ sub _dispatch {
 
     $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
     $target->( $cv, $call->params_list );
+}
+
+sub _batch {
+    my ($self, $handle, @request) = @_;
+
+    my @response;
+    for my $request (@request) {
+        my $internal = AnyEvent::JSONRPC::Lite::InternalHandle->new;
+
+        $self->_dispatch(undef, $internal, $request);
+
+        push @response, $internal;
+    }
+    
+    $handle->push_write( json => [ map { $_->recv } @response ] );
 }
 
 __PACKAGE__->meta->make_immutable;

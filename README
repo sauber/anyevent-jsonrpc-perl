@@ -9,11 +9,6 @@ all versions of the JSONRPC standard.
 The System Services/Service Description parts of version 1.1-wd and 1.1-alt is
 unimplemented and left to users to implement.
 
-The Batch processing parts of version 2.0 is unimplemented. It complicates the
-code and doesn't makes much sense with plain TCP as transport layer. The
-server is non-blocking and methods can make use of AnyEvent for enabling
-multiplexing. 
-
 INSTALLATION
 
 AnyEvent::JSONRPC::Lite installation is straightforward. If your CPAN shell is set up,
