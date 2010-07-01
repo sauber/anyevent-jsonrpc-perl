@@ -3,40 +3,32 @@ use Any::Moose;
 
 use AnyEvent;
 
-has _cv => (
+has cv => (
     is      => 'ro',
     isa     => 'AnyEvent::CondVar',
     default => sub {
         AnyEvent->condvar;
     },
+    handles => [qw( send recv )],
 );
 
-has packer_cb => (
-    is      => 'rw',
-    default => sub { sub { } },
+has call => (
+    is       => 'ro',
+    isa      => 'JSON::RPC::Common::Procedure::Call',
+    required => 1,
+    handles  => [qw( is_notification )], 
 );
 
 no Any::Moose;
 
-sub _cb {
-    my ($self, $cb) = @_;
-    $self->_cv->cb($cb);
-}
-
 sub result {
     my ($self, @result) = @_;
-    $self->_cv->send( result => @result);
+    $self->send( $self->call->return_result( @result ));
 }
 
 sub error {
     my ($self, @error) = @_;
-    $self->_cv->send( error => @error);
-}
-
-sub recv {
-    my ($self) = @_;
-
-    return $self->packer_cb->( $self->_cv->recv() );
+    $self->send( $self->call->return_error ( @error ) );
 }
 
 __PACKAGE__->meta->make_immutable;

@@ -8,6 +8,7 @@ use AnyEvent::Handle;
 use AnyEvent::Socket;
 
 use AnyEvent::JSONRPC::Lite::CondVar;
+use JSON::RPC::Common::Procedure::Call;
 
 has address => (
     is      => 'ro',
@@ -112,41 +113,26 @@ sub _dispatch {
 
     my $batch = (ref $request eq "ARRAY");
     my @results;
+    my @notifications;
 
-    for my $call ( ($batch ? @$request : $request) ) {
-        my $target = $self->_callbacks->{ $call->{method} };
-        my $id     = $call->{id}; 
-
-        my $res_cb = sub {
-            my $type   = shift;
-            my $result = @_ > 1 ? \@_ : $_[0];
-
-            return {
-                id     => $id,
-                jsonrpc => "2.0",
-                ($type eq 'result' ? (result => $result) : ()),
-                ($type eq 'error'  ? (error  => $result) : ()),
-            };
-        };
+    for my $json ( ($batch ? @$request : $request) ) {
+        my $call   = JSON::RPC::Common::Procedure::Call->inflate($json);
+        my $target = $self->_callbacks->{ $call->method };
 
         # Without id it is a notification and the result shouldn't be returned
-        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( 
-            defined $id ? (packer_cb => $res_cb) : ()
-        );
+        my $cv = AnyEvent::JSONRPC::Lite::CondVar->new( call => $call );
 
         $target ||= sub { shift->error(qq/No such method "$request->{method}" found/) };
-        $target->( 
-            $cv, 
-            ref $call->{params} eq "ARRAY" ? @{ $call->{params} } :
-            ref $call->{params} eq "HASH"  ? %{ $call->{params} } : ()
-        );
+        $target->( $cv, $call->params_list );
 
-        push @results, $cv;
+        push @{ $call->is_notification ? \@notifications : \@results }, $cv;
     }
 
-    @results = map { $_->recv } @results;
+    @results = map { $_->recv->deflate } @results;
     my $result = $batch ? \@results : $results[0];
     $handle->push_write( json => $result ) if $result;
+
+    $_->recv for @notifications;
 }
 
 __PACKAGE__->meta->make_immutable;
