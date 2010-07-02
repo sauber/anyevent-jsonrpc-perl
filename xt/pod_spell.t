@@ -7,4 +7,17 @@ all_pod_files_spelling_ok('lib');
 __DATA__
 Daisuke
 Murase
+Murase's
 KAYAC
+
+
+Makholm
+
+JSON
+RPC
+
+Yuval
+Kogman
+Kogman's
+
+wd
