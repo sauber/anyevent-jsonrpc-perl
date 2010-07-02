@@ -18,10 +18,12 @@ inc/Test/Builder.pm
 inc/Test/Builder/Module.pm
 inc/Test/More.pm
 inc/Test/TCP.pm
-lib/AnyEvent/JSONRPC/Lite.pm
-lib/AnyEvent/JSONRPC/Lite/Client.pm
-lib/AnyEvent/JSONRPC/Lite/CondVar.pm
-lib/AnyEvent/JSONRPC/Lite/Server.pm
+examples/jsonrpcd.pl
+lib/AnyEvent/JSONRPC.pm
+lib/AnyEvent/JSONRPC/Client.pm
+lib/AnyEvent/JSONRPC/CondVar.pm
+lib/AnyEvent/JSONRPC/InternalHandle.pm
+lib/AnyEvent/JSONRPC/Server.pm
 LICENSE
 Makefile.PL
 MANIFEST			This list of files

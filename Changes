@@ -1,4 +1,12 @@
-Revision history for Perl extension AnyEvent::JSONRPC::Lite
+Revision history for Perl extension AnyEvent::JSONRPC
+
+0.13_1 2010-07-02
+      - Forked AnyEvent::JSONRPC::Lite for a more full-spec implementation
+        All previous versions is from AnyEvent::JSONRPC::Lite
+        Thanks to Daisuke Murase for authoring the ::Lite module
+      - BACKWARD INCOMPATIBLE: The API is mostly the same, but with some
+                               subtle differences. 
+      - Based on JSON::RPC::Common to do most handling of JSON-RPC messages
 
 0.12  2010-05-28T11:35:58+09:00
       - fix a documentation bug (tokuhirom++)
