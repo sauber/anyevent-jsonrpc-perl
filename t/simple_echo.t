@@ -23,6 +23,7 @@ $server->reg_cb(
 my $client = AnyEvent::JSONRPC::Client->new(
     host => '127.0.0.1',
     port => $port,
+    version => '1.0',
 );
 
 my $res = $client->call( echo => { foo => 'bar' } )->recv;

@@ -39,7 +39,7 @@ $server->reg_cb(
     },
 );
 
-my $client = AnyEvent::JSONRPC::Client->new( host => '127.0.0.1', port => $port );
+my $client = AnyEvent::JSONRPC::Client->new( version => '1.0', host => '127.0.0.1', port => $port );
 
 my $cv1 = $client->call( wait => '1', $waits->[1] );
 my $cv2 = $client->call( wait => '2', $waits->[2] );

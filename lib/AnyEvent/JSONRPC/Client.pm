@@ -1,5 +1,6 @@
 package AnyEvent::JSONRPC::Client;
 use Any::Moose;
+use Any::Moose '::Util::TypeConstraints';
 
 use Carp;
 use Scalar::Util 'weaken';
@@ -7,6 +8,9 @@ use Scalar::Util 'weaken';
 use AnyEvent;
 use AnyEvent::Socket;
 use AnyEvent::Handle;
+
+use JSON::RPC::Common::Procedure::Call;
+use JSON::RPC::Common::Procedure::Return;
 
 has host => (
     is       => 'ro',
@@ -35,6 +39,12 @@ has on_error => (
             croak sprintf "Client got error: %s", $message;
         };
     },
+);
+
+has version => (
+    is      => 'rw',
+    isa     => enum( [qw( 1.0 1.1 2.0 )] ),
+    default => "2.0",
 );
 
 has handler_options => (
@@ -102,7 +112,7 @@ sub BUILD {
         });
 
         while (my $pooled = shift @{ $self->_request_pool }) {
-            $handle->push_write( json => $pooled );
+            $handle->push_write( json => $pooled->deflate );
         }
 
         $self->handler( $handle );
@@ -115,53 +125,74 @@ sub BUILD {
 sub call {
     my ($self, $method, @params) = @_;
 
-    my $request = {
-        id     => $self->_next_id->(),
-        method => $method,
-        params => \@params,
-    };
+    my $request = JSON::RPC::Common::Procedure::Call->inflate (
+        version => $self->version,
+        id      => $self->_next_id->(),
+        method  => $method,
+        params  => $self->_params( @params ),
+    );
 
     if ($self->handler) {
-        $self->handler->push_write( json => $request );
+        my $json = $request->deflate;
+        $self->handler->push_write( json => $json );
     }
     else {
         push @{ $self->_request_pool }, $request;
     }
 
-    $self->_callbacks->{ $request->{id} } = AnyEvent->condvar;
+    $self->_callbacks->{ $request->id } = AnyEvent->condvar;
 }
 
 sub _handle_response {
-    my ($self, $res) = @_;
+    my ($self, $json) = @_;
 
-    my $d = delete $self->_callbacks->{ $res->{id} };
+    my $response = JSON::RPC::Common::Procedure::Return->inflate( $json );
+    my $d = delete $self->_callbacks->{ $response->id };
     unless ($d) {
         warn q/Invalid response from server/;
         return;
     }
 
-    if (my $error = $res->{error}) {
+    if (my $error = $response->error) {
         $d->croak($error);
     }
     else {
-        $d->send($res->{result});
+        $d->send($response->result);
     }
 }
 
 sub notify {
     my ($self, $method, @params) = @_;
 
-    my $request = {
-        method => $method,
-        params => \@params,
-    };
+    my $request = JSON::RPC::Common::Call->inflate (
+        version => $self->version,
+        method  => $method,
+        params  => $self->_params( @params ),
+    );
 
     if ($self->handler) {
-        $self->handler->push_write( json => $request );
+        $self->handler->push_write( json => $request->deflate );
     }
     else {
         push @{ $self->_request_pool }, $request;
     }
+}
+
+sub _params {
+    my $self = shift;
+
+    my $param;
+    if (scalar( @_ ) == 1) {
+        $param = shift;
+        
+        $param = [ $param ] if (ref $param eq "HASH" and $self->version eq "1.0")
+                            || not ref $param;
+         
+    } else {
+        $param = [ @_ ];
+    }
+
+    return $param;
 }
 
 __PACKAGE__->meta->make_immutable;

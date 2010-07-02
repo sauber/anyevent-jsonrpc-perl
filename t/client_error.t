@@ -18,4 +18,4 @@ my $res;
 eval { $res = $client->call('error')->recv };
 
 ok !$res, '$res is not set ok';
-like $@->{message}, qr/^error message!/, 'error message ok';
+like $@->message, qr/^error message!/, 'error message ok';

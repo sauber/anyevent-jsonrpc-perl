@@ -23,6 +23,7 @@ my $client;
     $client = AnyEvent::JSONRPC::Client->new(
         host => '127.0.0.1',
         port => $port,
+        version => '1.0',
         handler_options => {
             on_error => sub {
                 $closed++;

@@ -19,6 +19,7 @@ $server->reg_cb(
 
 # client;
 my $client = jsonrpc_client '127.0.0.1', $port;
+$client->version('1.0');
 
 my $res = $client->call( echo => { foo => 'bar' } )->recv;
 
