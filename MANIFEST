@@ -22,6 +22,7 @@ examples/jsonrpcd.pl
 lib/AnyEvent/JSONRPC.pm
 lib/AnyEvent/JSONRPC/Client.pm
 lib/AnyEvent/JSONRPC/CondVar.pm
+lib/AnyEvent/JSONRPC/HTTP/Client.pm
 lib/AnyEvent/JSONRPC/InternalHandle.pm
 lib/AnyEvent/JSONRPC/Server.pm
 LICENSE

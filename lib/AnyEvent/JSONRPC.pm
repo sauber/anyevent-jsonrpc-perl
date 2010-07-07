@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use base 'Exporter';
 
-our $VERSION = '0.13_1';
+our $VERSION = '0.13_2';
 
 our @EXPORT = qw/jsonrpc_client jsonrpc_server/;
 
