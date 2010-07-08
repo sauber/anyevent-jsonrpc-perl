@@ -28,11 +28,12 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::InternalHandle - Handle object used internally in AnyEvent::JSONRPC::Server
+AnyEvent::JSONRPC::InternalHandle - Handle object used internally in
+AnyEvent::JSONRPC::TCP::Server
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Server>.
+L<AnyEvent::JSONRPC>.
 
 =head1 AUTHOR
 

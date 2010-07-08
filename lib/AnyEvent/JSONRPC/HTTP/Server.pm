@@ -113,7 +113,7 @@ AnyEvent::JSONRPC::HTTP::Server - Simple HTTP-based JSONRPC server
 
     use AnyEvent::JSONRPC::HTTP::Server;
     
-    my $server = AnyEvent::JSONRPC::Server->new( port => 8080 );
+    my $server = AnyEvent::JSONRPC::HTTP::Server->new( port => 8080 );
     $server->reg_cb(
         echo => sub {
             my ($res_cv, @params) = @_;

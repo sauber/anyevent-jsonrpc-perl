@@ -20,7 +20,7 @@ my $cv = AnyEvent->condvar;
 my $client;
 {
     my $closed;
-    $client = AnyEvent::JSONRPC::Client->new(
+    $client = AnyEvent::JSONRPC::TCP::Client->new(
         host => '127.0.0.1',
         port => $port,
         version => '1.0',

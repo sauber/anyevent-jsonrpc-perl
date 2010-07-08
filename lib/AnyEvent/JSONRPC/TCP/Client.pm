@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Client;
+package AnyEvent::JSONRPC::TCP::Client;
 use Any::Moose;
 use Any::Moose '::Util::TypeConstraints';
 
@@ -210,13 +210,13 @@ blockingly condvar condvars coroutine unix
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Client - Simple TCP-based JSONRPC client
+AnyEvent::JSONRPC::TCP::Client - Simple TCP-based JSONRPC client
 
 =head1 SYNOPSIS
 
-    use AnyEvent::JSONRPC::Client;
+    use AnyEvent::JSONRPC::TCP::Client;
     
-    my $client = AnyEvent::JSONRPC::Client->new(
+    my $client = AnyEvent::JSONRPC::TCP::Client->new(
         host => '127.0.0.1',
         port => 4423,
     );
@@ -275,7 +275,7 @@ use of condvars.
 
 Create new client object and return it.
 
-    my $client = AnyEvent::JSONRPC::Client->new(
+    my $client = AnyEvent::JSONRPC::TCP::Client->new(
         host => '127.0.0.1',
         port => 4423,
         %options,

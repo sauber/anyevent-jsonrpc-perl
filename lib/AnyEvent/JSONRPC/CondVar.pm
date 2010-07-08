@@ -39,11 +39,12 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::CondVar - Condvar object used in AnyEvent::JSONRPC::Server
+AnyEvent::JSONRPC::CondVar - Condvar object used in
+AnyEvent::JSONRPC::TCP::Server and AnyEvent::JSONRPC::HTTP::Server
 
 =head1 SEE ALSO
 
-L<AnyEvent::JSONRPC::Server>.
+L<AnyEvent::JSONRPC::TCP::Server> and L<AnyEvent::JSONRPC::HTTP::Server>
 
 =head1 METHOD
 

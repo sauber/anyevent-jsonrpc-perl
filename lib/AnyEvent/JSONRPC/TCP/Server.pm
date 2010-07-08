@@ -1,4 +1,4 @@
-package AnyEvent::JSONRPC::Server;
+package AnyEvent::JSONRPC::TCP::Server;
 use Moose;
 
 use Carp;
@@ -147,13 +147,13 @@ __END__
 
 =head1 NAME
 
-AnyEvent::JSONRPC::Server - Simple TCP-based JSONRPC server
+AnyEvent::JSONRPC::TCP::Server - Simple TCP-based JSONRPC server
 
 =head1 SYNOPSIS
 
-    use AnyEvent::JSONRPC::Server;
+    use AnyEvent::JSONRPC::TCP::Server;
     
-    my $server = AnyEvent::JSONRPC::Server->new( port => 4423 );
+    my $server = AnyEvent::JSONRPC::TCP::Server->new( port => 4423 );
     $server->reg_cb(
         echo => sub {
             my ($res_cv, @params) = @_;
@@ -175,7 +175,7 @@ This module is server part of L<AnyEvent::JSONRPC>.
 
 Create server object, start listening socket, and return object.
 
-    my $server = AnyEvent::JSONRPC::Server->new(
+    my $server = AnyEvent::JSONRPC::TCP::Server->new(
         port => 4423,
     );
 

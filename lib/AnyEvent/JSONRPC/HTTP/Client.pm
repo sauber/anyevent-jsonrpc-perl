@@ -168,7 +168,7 @@ AnyEvent::JSONRPC::HTTP::Client - Simple HTTP-based JSONRPC client
 
     use AnyEvent::JSONRPC::HTTP::Client;
     
-    my $client = AnyEvent::JSONRPC::Client->new(
+    my $client = AnyEvent::JSONRPC::HTTP::Client->new(
         url      => 'http://rpc.example.net/issues',
         username => "pmakholm",
         password => "secret",
@@ -228,7 +228,7 @@ use of condvars.
 
 Create new client object and return it.
 
-    my $client = AnyEvent::JSONRPC::Client->new(
+    my $client = AnyEvent::JSONRPC::HTTP::Client->new(
         host => '127.0.0.1',
         port => 4423,
         %options,

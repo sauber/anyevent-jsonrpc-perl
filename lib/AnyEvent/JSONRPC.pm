@@ -7,13 +7,13 @@ our $VERSION = '0.13_2';
 
 our @EXPORT = qw/jsonrpc_client jsonrpc_server/;
 
-use AnyEvent::JSONRPC::Client;
-use AnyEvent::JSONRPC::Server;
+use AnyEvent::JSONRPC::TCP::Client;
+use AnyEvent::JSONRPC::TCP::Server;
 
 sub jsonrpc_client($$) {
     my ($host, $port) = @_;
 
-    AnyEvent::JSONRPC::Client->new(
+    AnyEvent::JSONRPC::TCP::Client->new(
         host => $host,
         port => $port,
     );
@@ -22,7 +22,7 @@ sub jsonrpc_client($$) {
 sub jsonrpc_server($$) {
     my ($address, $port) = @_;
 
-    AnyEvent::JSONRPC::Server->new(
+    AnyEvent::JSONRPC::TCP::Server->new(
         address => $address,
         port    => $port,
     );
@@ -61,7 +61,8 @@ AnyEvent::JSONRPC - Simple TCP-based JSONRPC client/server
 
 This module provide TCP-based JSONRPC server/client implementation.
 
-L<AnyEvent::JSONRPC> provide you a couple of export functions that are shortcut of L<AnyEvent::JSONRPC::Client> and L<AnyEvent::JSONRPC::Server>.
+L<AnyEvent::JSONRPC> provide you a couple of export functions that are
+shortcut of L<AnyEvent::JSONRPC::TCP::Client> and L<AnyEvent::JSONRPC::TCP::Server>.
 One is C<jsonrpc_client> for Client, another is C<jsonrpc_server> for Server.
 
 =head2 DIFFERENCES FROM THE "Lite" MODULE
@@ -81,29 +82,29 @@ an otherwise full-spec implementation.
 
 =head2 jsonrpc_server $address, $port;
 
-Create L<AnyEvent::JSONRPC::Server> object and return it.
+Create L<AnyEvent::JSONRPC::TCP::Server> object and return it.
 
 This is equivalent to:
 
-    AnyEvent::JSONRPC::Server->new(
+    AnyEvent::JSONRPC::TCP::Server->new(
         address => $address,
         port    => $port,
     );
 
-See L<AnyEvent::JSONRPC::Server> for more detail.
+See L<AnyEvent::JSONRPC::TCP::Server> for more detail.
 
 =head2 jsonrpc_client $hostname, $port
 
-Create L<AnyEvent::JSONRPC::Client> object and return it.
+Create L<AnyEvent::JSONRPC::TCP::Client> object and return it.
 
 This is equivalent to:
 
-    AnyEvent::JSONRPC::Client->new(
+    AnyEvent::JSONRPC::TCP::Client->new(
         host => $hostname,
         port => $port,
     );
 
-See L<AnyEvent::JSONRPC::Client> for more detail.
+See L<AnyEvent::JSONRPC::TCP::Client> for more detail.
 
 =head1 SEE ALSO
 
