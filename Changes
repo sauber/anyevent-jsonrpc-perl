@@ -1,5 +1,9 @@
 Revision history for Perl extension AnyEvent::JSONRPC
 
+0.13_3 2010-07-08
+      - Added simple HTTP server based on AnyEvent::HTTPD
+      - Moved TCP code to AnyEvent::JSONRPC::TCP::*
+
 0.13_2 2010-07-07
       - Added simple HTTP client based on AnyEvent::HTTP
 
