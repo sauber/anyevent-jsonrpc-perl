@@ -1,6 +1,8 @@
 package AnyEvent::JSONRPC::TCP::Server;
 use Moose;
 
+extends 'AnyEvent::JSONRPC::Server';
+
 use Carp;
 use Scalar::Util 'weaken';
 

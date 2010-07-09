@@ -2,6 +2,8 @@ package AnyEvent::JSONRPC::TCP::Client;
 use Any::Moose;
 use Any::Moose '::Util::TypeConstraints';
 
+extends 'AnyEvent::JSONRPC::Client';
+
 use Carp;
 use Scalar::Util 'weaken';
 
