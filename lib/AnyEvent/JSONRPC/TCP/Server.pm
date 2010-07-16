@@ -90,6 +90,7 @@ sub BUILD {
                 $self->on_eof->(@_);
                 $h->destroy;
             },
+            json => $self->json,
             %{ $self->handler_options },
             fh => $fh,
         );

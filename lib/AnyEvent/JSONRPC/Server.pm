@@ -1,6 +1,14 @@
 package AnyEvent::JSONRPC::Server;
 
 use Moose;
+use JSON::XS;
+
+has json => (
+    is      => "ro",
+    default => sub {
+        JSON::XS->new->allow_blessed(1)->convert_blessed(1);
+    },
+);
 
 no Moose;
 

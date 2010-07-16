@@ -55,7 +55,7 @@ sub BUILD {
         request => sub {
             my ($httpd, $req) = @_;
 
-            my $request = eval { decode_json( $req->content ) };
+            my $request = eval { $self->json->decode( $req->content ) };
 
             unless (defined $request ) {
                 $req->respond( [ 400, 'Bad Request' ] );
@@ -66,7 +66,7 @@ sub BUILD {
             my $response = $self->_dispatch( $request );
 
             if ($response) {
-                $req->respond( [ 200, 'Ok', { "Content-Type" => "application/json" }, encode_json $response ] ); 
+                $req->respond( [ 200, 'Ok', { "Content-Type" => "application/json" }, $self->json->encode( $response ) ] ); 
             } else {
                 $req->respond( [ 204, 'No Content' ] );
             }
