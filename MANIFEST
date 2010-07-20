@@ -21,6 +21,9 @@ inc/Test/TCP.pm
 examples/jsonrpcd.pl
 lib/AnyEvent/JSONRPC.pm
 lib/AnyEvent/JSONRPC/CondVar.pm
+lib/AnyEvent/JSONRPC/Client.pm
+lib/AnyEvent/JSONRPC/Server.pm
+lib/AnyEvent/JSONRPC/Utils.pm
 lib/AnyEvent/JSONRPC/HTTP/Client.pm
 lib/AnyEvent/JSONRPC/HTTP/Server.pm
 lib/AnyEvent/JSONRPC/InternalHandle.pm
