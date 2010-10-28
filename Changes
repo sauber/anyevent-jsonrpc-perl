@@ -1,5 +1,9 @@
 Revision history for Perl extension AnyEvent::JSONRPC
 
+0.15   2010-10-28
+      - Fix error in AnyEvent::JSONRPC::HTTP::Server making this module unusable
+      - Silence warning about AnyEvent::JSONRPC::Client being a non-Mouse class
+
 0.14   2010-07-20
       - Added base classes AnyEvent::JSONRPC::Server and
         AnyEvent::JSONRPC::Client
