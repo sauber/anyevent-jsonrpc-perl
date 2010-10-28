@@ -18,6 +18,6 @@ author_tests('xt');
 use_test_base;
 
 auto_include;
-auto_set_repository;
+githubmeta;
 
 WriteAll;
