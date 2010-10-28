@@ -81,7 +81,7 @@ sub BUILD {
 sub _dispatch {
     my ($self, $request) = @_;
 
-    return $self->_batch($handle, @$request) if ref $request eq "ARRAY";
+    return $self->_batch(@$request) if ref $request eq "ARRAY";
     return unless $request and ref $request eq "HASH";
 
     my $call   = JSON::RPC::Common::Procedure::Call->inflate($request);
