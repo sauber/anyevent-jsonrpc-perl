@@ -117,7 +117,7 @@ sub _handle_response {
 sub notify {
     my ($self, $method, @params) = @_;
 
-    my $request = JSON::RPC::Common::Call->inflate (
+    my $request = JSON::RPC::Common::Procedure::Call->inflate (
         version => $self->version,
         method  => $method,
         params  => $self->_params( @params ),
