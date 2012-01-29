@@ -168,6 +168,7 @@ sub notify {
 
     my $request = JSON::RPC::Common::Procedure::Call->inflate (
         version => $self->version,
+        id      => undef,
         method  => $method,
         params  => $self->_params( @params ),
     );

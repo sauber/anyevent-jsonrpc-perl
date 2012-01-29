@@ -103,7 +103,6 @@ sub BUILD {
         $self->_handlers->[ fileno($fh) ] = $handle;
     };
     weaken $self;
-
     $self;
 }
 
