@@ -31,6 +31,12 @@ __END__
 AnyEvent::JSONRPC::InternalHandle - Handle object used internally in
 AnyEvent::JSONRPC::TCP::Server
 
+=head1 FUNCTIONS
+
+=head2 push_write
+
+Send JSON object.
+
 =head1 SEE ALSO
 
 L<AnyEvent::JSONRPC>.
