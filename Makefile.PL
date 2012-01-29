@@ -8,8 +8,8 @@ requires 'AnyEvent' => '5.12';
 requires 'JSON::XS' => '2.22';  # For incremental parsing
 requires 'JSON::RPC::Common';
 
-recommends 'AnyEvent::HTTP';
-recommends 'AnyEvent::HTTPD';
+requires 'AnyEvent::HTTP';
+requires 'AnyEvent::HTTPD';
 
 test_requires 'Test::More';
 test_requires 'Test::TCP';
