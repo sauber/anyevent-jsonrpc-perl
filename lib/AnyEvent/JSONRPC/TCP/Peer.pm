@@ -128,6 +128,7 @@ sub BUILD {
       return;
     } 
 
+    # TODO: Needs to happen in Client class
     # Or create new connection
     my $guard = tcp_connect $self->host, $self->port, sub {
         my ($fh) = @_
@@ -282,6 +283,7 @@ sub call {
 
     if ($self->handler) {
         my $json = $request->deflate;
+        #x 'call deflate', $json;
         $self->handler->push_write( json => $json );
     }
     else {

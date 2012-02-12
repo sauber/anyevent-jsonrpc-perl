@@ -1,5 +1,6 @@
 package AnyEvent::JSONRPC::TCP::Listener;
 use Moose;
+use Moose::Util::TypeConstraints;
 
 extends 'AnyEvent::JSONRPC::Server';
 
@@ -24,6 +25,12 @@ has port => (
     is      => 'ro',
     isa     => 'Int|Str',
     default => 4423,
+);
+
+has version => (
+    is      => 'rw',
+    isa     => enum( [qw( 1.0 1.1 2.0 )] ),
+    default => "2.0",
 );
 
 #has on_error => (
@@ -108,6 +115,7 @@ sub BUILD {
           fh => $fh,
           host => $host,
           port => $port,
+          version => $self->version,
           is_server => 1,
         );
 
@@ -115,6 +123,7 @@ sub BUILD {
         $peer->reg_cb( $self->callbacks );
 
         # Register peer by fileno
+        #warn sprintf "*** Register connection as peer %s", fileno($fh);
         $self->_peers->[ fileno($fh) ] = $peer;
     };
     weaken $self;
