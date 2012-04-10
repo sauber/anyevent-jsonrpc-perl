@@ -11,6 +11,8 @@ BEGIN { require 'sub_x.pm' };
 my $port = empty_port;
 
 ## server
+# TODO: Both server and client should be of Peer class
+#       Requires differently named listening and connecting parameters
 my $server = AnyEvent::JSONRPC::TCP::Listener->new(
   port => $port,
   version => '1.0',
